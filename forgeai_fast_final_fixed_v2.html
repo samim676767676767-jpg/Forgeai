@@ -1,0 +1,5820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<meta name="color-scheme" content="dark">
+<title>ForgeAI — AI Website Builder</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#090b10;
+  color:#f5f7fb;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:not-allowed;
+  opacity:.5;
+}
+
+:root{
+  --bg:#090b10;
+  --panel:#0d1016;
+  --panel2:#11151c;
+  --panel3:#171c25;
+  --panel4:#1c222d;
+  --line:#262d39;
+  --line2:#343c4a;
+  --text:#f5f7fb;
+  --muted:#7f8998;
+  --muted2:#626b79;
+  --accent:#7958ef;
+  --accent2:#6244d8;
+  --good:#22c55e;
+  --warn:#f59e0b;
+  --bad:#ef4444;
+  --blue:#3b82f6;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top{
+  height:62px;
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#0b0e14;
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+
+.mark{
+  width:37px;
+  height:37px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:linear-gradient(135deg,#8b63ff,#5c43db);
+  font-size:20px;
+  box-shadow:0 8px 25px #0006;
+  flex:none;
+}
+
+.name{
+  font-size:18px;
+  font-weight:800;
+  margin-left:10px;
+}
+
+.project{
+  margin-left:12px;
+  padding-left:12px;
+  border-left:1px solid var(--line);
+  font-size:11px;
+  color:var(--muted);
+  max-width:260px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.status{
+  font-size:10px;
+  color:var(--muted);
+  display:flex;
+  gap:6px;
+  align-items:center;
+  white-space:nowrap;
+}
+
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#555;
+}
+
+.dot.on{
+  background:var(--good);
+  box-shadow:0 0 9px #22c55e99;
+}
+
+.btn{
+  height:34px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--panel3);
+  color:#c8ced8;
+  padding:0 10px;
+  font-size:10px;
+  transition:.15s ease;
+}
+
+.btn:hover{
+  border-color:var(--line2);
+  background:#1b212b;
+  color:#fff;
+}
+
+.primary{
+  border:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  font-weight:750;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.layout{
+  flex:1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:365px 1fr;
+}
+
+.side{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  background:var(--panel);
+  border-right:1px solid var(--line);
+}
+
+.side-head{
+  height:49px;
+  min-height:49px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 13px;
+  border-bottom:1px solid var(--line);
+}
+
+.side-head b{
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#b9c0cc;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  padding:15px;
+  scrollbar-width:thin;
+  scrollbar-color:#303745 transparent;
+}
+
+.chat::-webkit-scrollbar{
+  width:7px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+  background:#303745;
+  border-radius:10px;
+}
+
+.welcome{
+  padding:3px 3px 14px;
+}
+
+.welcome-icon{
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,#8059f1,#5841d7);
+  margin-bottom:12px;
+}
+
+.welcome h1{
+  font-size:20px;
+  margin:0 0 6px;
+}
+
+.welcome p{
+  font-size:11px;
+  line-height:1.55;
+  color:var(--muted);
+  margin:0;
+}
+
+.suggestions{
+  display:grid;
+  gap:7px;
+  margin-top:14px;
+}
+
+.suggestion{
+  border:1px solid var(--line);
+  background:#12161e;
+  color:#aeb6c4;
+  border-radius:9px;
+  padding:10px;
+  text-align:left;
+  font-size:10px;
+  transition:.15s ease;
+}
+
+.suggestion:hover{
+  background:#191e27;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.msg{
+  margin-bottom:20px;
+}
+
+.label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:10px;
+  color:#939cab;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.msg.user .label{
+  color:#c7baff;
+}
+
+.avatar{
+  width:21px;
+  height:21px;
+  display:grid;
+  place-items:center;
+  border-radius:7px;
+  background:#1b2130;
+  font-size:9px;
+}
+
+.content{
+  font-size:11px;
+  line-height:1.6;
+  color:#d9dde5;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.changes{
+  margin-top:9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px;
+  background:#11151d;
+}
+
+.changes b{
+  font-size:9px;
+}
+
+.changes div{
+  font-size:9px;
+  color:#8993a2;
+  margin-top:5px;
+}
+
+.changes div::before{
+  content:"✓ ";
+  color:var(--good);
+}
+
+.quick{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:9px;
+}
+
+.quick button{
+  border:1px solid var(--line);
+  background:#151a22;
+  color:#929baa;
+  border-radius:6px;
+  padding:5px 7px;
+  font-size:9px;
+  transition:.15s ease;
+}
+
+.quick button:hover{
+  color:#fff;
+  border-color:var(--line2);
+  background:#1b212a;
+}
+
+/* =========================
+   PROMPT
+========================= */
+
+.prompt-wrap{
+  border-top:1px solid var(--line);
+  padding:10px;
+  background:#0b0e14;
+}
+
+.prompt-box{
+  border:1px solid #2c3341;
+  border-radius:11px;
+  background:#151923;
+  overflow:hidden;
+  transition:.15s ease;
+}
+
+.prompt-box:focus-within{
+  border-color:#6654c4;
+  box-shadow:0 0 0 3px #7958ef15;
+}
+
+.prompt{
+  display:block;
+  width:100%;
+  min-height:76px;
+  max-height:180px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#f4f5f8;
+  padding:11px;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.prompt::placeholder{
+  color:#697281;
+}
+
+.prompt-row{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7px 5px 10px;
+}
+
+.hint{
+  font-size:8px;
+  color:#626b79;
+}
+
+.send{
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:8px;
+  background:var(--accent);
+  color:#fff;
+  font-size:17px;
+  transition:.15s ease;
+}
+
+.send:hover{
+  background:#896cf3;
+}
+
+.send.loading{
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  50%{
+    opacity:.55;
+  }
+}
+
+/* =========================
+   WORKSPACE
+========================= */
+
+.workspace{
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.workspace-head{
+  height:50px;
+  min-height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+  border-bottom:1px solid var(--line);
+  background:var(--panel);
+}
+
+.tabs{
+  display:flex;
+  gap:4px;
+}
+
+.tab{
+  height:31px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#7f8897;
+  padding:0 12px;
+  font-size:10px;
+  transition:.15s ease;
+}
+
+.tab.active{
+  background:#191e27;
+  color:#fff;
+}
+
+.tools{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.tool{
+  height:30px;
+  padding:0 8px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#151a22;
+  color:#9fa8b6;
+  font-size:9px;
+  transition:.15s ease;
+}
+
+.tool:hover{
+  color:#fff;
+  border-color:var(--line2);
+  background:#1b212a;
+}
+
+.tool.good:hover{
+  border-color:#22c55e66;
+  color:#8af0ac;
+}
+
+/* =========================
+   PREVIEW
+========================= */
+
+.stage{
+  position:relative;
+  flex:1;
+  min-height:0;
+  background:#090b10;
+  padding:14px;
+  background-image:
+    radial-gradient(
+      circle at 50% 45%,
+      #7958ef12,
+      transparent 52%
+    );
+}
+
+.frame{
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #2b323e;
+  border-radius:11px;
+  background:#fff;
+  box-shadow:0 20px 55px #0006;
+  transition:.2s ease;
+}
+
+.frame iframe{
+  display:none;
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
+}
+
+.empty{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:#0b0e14;
+  text-align:center;
+}
+
+.empty-icon{
+  width:57px;
+  height:57px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#151a22;
+  font-size:22px;
+  margin-bottom:12px;
+}
+
+.empty h2{
+  font-size:13px;
+  margin:0 0 4px;
+}
+
+.empty p{
+  font-size:10px;
+  color:#697281;
+  margin:0;
+}
+
+/* =========================
+   DEVICE SELECTOR
+========================= */
+
+.devices{
+  position:absolute;
+  z-index:4;
+  top:21px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  padding:3px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#11151de8;
+  backdrop-filter:blur(8px);
+  box-shadow:0 8px 25px #0004;
+}
+
+.devices button{
+  border:0;
+  background:transparent;
+  color:#808998;
+  border-radius:5px;
+  padding:5px 8px;
+  font-size:8px;
+}
+
+.devices button.active{
+  background:#292334;
+  color:#fff;
+}
+
+.stage.tablet .frame{
+  max-width:768px;
+  margin:auto;
+}
+
+.stage.mobile .frame{
+  max-width:390px;
+  margin:auto;
+}
+
+/* =========================
+   CODE EDITOR
+========================= */
+
+.code{
+  display:none;
+  flex:1;
+  min-height:0;
+  position:relative;
+}
+
+.editor{
+  width:100%;
+  height:100%;
+  resize:none;
+  border:0;
+  outline:0;
+  background:#090b10;
+  color:#dce1e9;
+  padding:17px;
+  font:12px/1.6 Consolas,Monaco,"Courier New",monospace;
+  tab-size:2;
+  white-space:pre;
+}
+
+/* =========================
+   DIAGNOSTICS
+========================= */
+
+.diagnostics{
+  display:none;
+  position:absolute;
+  z-index:8;
+  left:0;
+  right:0;
+  bottom:0;
+  max-height:270px;
+  background:#0e1117;
+  border-top:1px solid var(--line);
+  box-shadow:0 -15px 40px #0007;
+}
+
+.diag-head{
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+  border-bottom:1px solid var(--line);
+}
+
+.diag-head b{
+  font-size:9px;
+}
+
+.diag-list{
+  max-height:225px;
+  overflow:auto;
+  padding:8px;
+}
+
+.issue{
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:8px;
+  margin-bottom:6px;
+  font-size:9px;
+  color:#9da6b4;
+}
+
+.issue strong{
+  display:block;
+  color:#e5e8ee;
+  margin-bottom:3px;
+}
+
+.issue.critical{
+  border-color:#ef444455;
+}
+
+.issue.warning{
+  border-color:#f59e0b44;
+}
+
+.issue.info{
+  border-color:#3b82f644;
+}
+
+.issue.ok{
+  border-color:#22c55e44;
+}
+
+.fix{
+  margin-top:6px;
+  border:1px solid var(--line);
+  background:#171c24;
+  color:#cbd1dc;
+  border-radius:5px;
+  padding:4px 7px;
+  font-size:8px;
+}
+
+.fix:hover{
+  color:#fff;
+  background:#202630;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  display:none;
+  position:absolute;
+  z-index:30;
+  inset:0;
+  align-items:center;
+  justify-content:center;
+  background:#05070bcc;
+  backdrop-filter:blur(7px);
+}
+
+.loading-card{
+  width:350px;
+  max-width:calc(100% - 30px);
+  border:1px solid #303746;
+  border-radius:13px;
+  background:#11151d;
+  padding:18px;
+  box-shadow:0 25px 70px #0008;
+}
+
+.load-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:13px;
+}
+
+.spinner{
+  width:26px;
+  height:26px;
+  border:3px solid #2b3140;
+  border-top-color:#9a7cff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  flex:none;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.load-title{
+  font-size:11px;
+  font-weight:750;
+}
+
+.load-sub{
+  font-size:8px;
+  color:#788291;
+  margin-top:3px;
+}
+
+.track{
+  height:4px;
+  border-radius:8px;
+  background:#252b36;
+  overflow:hidden;
+}
+
+.bar{
+  height:100%;
+  width:4%;
+  background:linear-gradient(90deg,#704de5,#a78cff);
+  transition:.3s;
+}
+
+/* =========================
+   PLAN
+========================= */
+
+.plan{
+  display:none;
+  position:absolute;
+  z-index:20;
+  inset:0;
+  align-items:center;
+  justify-content:center;
+  background:#080a0fe8;
+  backdrop-filter:blur(5px);
+}
+
+.plan-card{
+  width:370px;
+  max-width:calc(100% - 30px);
+  padding:17px;
+  border:1px solid var(--line2);
+  border-radius:12px;
+  background:#11151d;
+  box-shadow:0 30px 70px #0008;
+}
+
+.plan-card h3{
+  font-size:12px;
+  margin:0 0 9px;
+}
+
+.plan-card p{
+  font-size:9px;
+  color:var(--muted);
+  line-height:1.5;
+  margin:0 0 10px;
+}
+
+.plan-card ol{
+  margin:0;
+  padding-left:18px;
+  color:#aab3c0;
+  font-size:9px;
+  line-height:1.8;
+}
+
+.plan-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:6px;
+  margin-top:12px;
+}
+
+.plan-actions button{
+  border:1px solid var(--line);
+  background:#171c24;
+  color:#cbd1dc;
+  border-radius:6px;
+  padding:6px 9px;
+  font-size:9px;
+}
+
+.plan-actions .build{
+  border:0;
+  background:var(--accent);
+  color:#fff;
+}
+
+/* =========================
+   API MODAL
+========================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  z-index:100;
+  inset:0;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:#000b;
+  backdrop-filter:blur(7px);
+}
+
+.modal-card{
+  width:100%;
+  max-width:430px;
+  border:1px solid #303746;
+  border-radius:14px;
+  background:#12161e;
+  overflow:hidden;
+  box-shadow:0 30px 80px #0009;
+}
+
+.modal-head{
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 15px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  font-size:13px;
+}
+
+.close{
+  border:0;
+  background:transparent;
+  color:#8992a0;
+  font-size:19px;
+}
+
+.close:hover{
+  color:#fff;
+}
+
+.modal-body{
+  padding:16px;
+}
+
+.modal-body p{
+  font-size:10px;
+  line-height:1.5;
+  color:#818b99;
+  margin:0 0 11px;
+}
+
+.key-wrap{
+  position:relative;
+}
+
+.key{
+  width:100%;
+  height:41px;
+  border:1px solid #2e3543;
+  border-radius:8px;
+  background:#0d1016;
+  color:#fff;
+  outline:0;
+  padding:0 38px 0 10px;
+  font-size:10px;
+}
+
+.key:focus{
+  border-color:#6953d1;
+}
+
+.toggle{
+  position:absolute;
+  right:4px;
+  top:4px;
+  width:32px;
+  height:32px;
+  border:0;
+  background:transparent;
+  color:#808a98;
+}
+
+.security{
+  font-size:8px!important;
+  color:#626c7a!important;
+  margin-top:8px!important;
+}
+
+.modal-foot{
+  display:flex;
+  justify-content:flex-end;
+  gap:6px;
+  padding:11px 15px;
+  border-top:1px solid var(--line);
+}
+
+.modal-foot button{
+  height:32px;
+  border-radius:7px;
+  padding:0 11px;
+  font-size:10px;
+}
+
+.cancel{
+  border:1px solid var(--line);
+  background:#171c24;
+  color:#c0c6d0;
+}
+
+.save{
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+}
+
+/* =========================
+   CONFIRM MODAL
+========================= */
+
+.confirm-text{
+  font-size:11px!important;
+  color:#b4bcc9!important;
+  line-height:1.6!important;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  z-index:200;
+  padding:9px 12px;
+  border:1px solid #343b49;
+  border-radius:7px;
+  background:#151a23;
+  color:#e4e7ed;
+  font-size:10px;
+  opacity:0;
+  transform:translateY(7px);
+  transition:.2s;
+  pointer-events:none;
+  box-shadow:0 12px 35px #0007;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile{
+  display:none!important;
+}
+
+@media(max-width:850px){
+
+  .layout{
+    display:block;
+    position:relative;
+  }
+
+  .side{
+    position:absolute;
+    z-index:50;
+    inset:0;
+    width:100%;
+    height:100%;
+    transform:translateX(-100%);
+    transition:.22s ease;
+  }
+
+  .side.open{
+    transform:none;
+  }
+
+  .mobile{
+    display:block!important;
+  }
+
+  .status,
+  .project,
+  .new-hide{
+    display:none;
+  }
+
+  .top{
+    padding:0 8px;
+  }
+
+  .name{
+    font-size:16px;
+  }
+
+  .stage{
+    padding:6px;
+  }
+
+  .workspace-head{
+    padding:0 7px;
+  }
+
+  .tool{
+    padding:0 7px;
+  }
+
+  .tool.hide-mobile{
+    display:none;
+  }
+}
+
+@media(max-width:520px){
+
+  .export-hide{
+    display:none;
+  }
+
+  .top-actions{
+    gap:4px;
+  }
+
+  .primary{
+    padding:0 8px;
+  }
+
+  .tools{
+    gap:3px;
+  }
+
+  .tools .tool:nth-child(4){
+    display:none;
+  }
+
+  .devices{
+    top:10px;
+  }
+}
+
+@media(max-width:380px){
+
+  .tabs .tab{
+    padding:0 8px;
+  }
+
+  .tools .tool{
+    padding:0 6px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       TOP BAR
+  ========================== -->
+
+  <header class="top">
+
+    <div class="brand">
+
+      <div class="mark">✦</div>
+
+      <div class="name">ForgeAI</div>
+
+      <div class="project" id="projectName">
+        Untitled project
+      </div>
+
+    </div>
+
+    <div class="top-actions">
+
+      <div class="status">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">API not connected</span>
+      </div>
+
+      <button
+        class="btn mobile"
+        id="menuBtn"
+        title="Open builder"
+      >
+        ☰
+      </button>
+
+      <button
+        class="btn new-hide"
+        id="newBtn"
+      >
+        ＋ New
+      </button>
+
+      <button
+        class="btn export-hide"
+        id="exportBtn"
+      >
+        ↓ Export
+      </button>
+
+      <button
+        class="btn primary"
+        id="apiBtn"
+      >
+        🔑 Add API Key
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="side" id="side">
+
+      <div class="side-head">
+
+        <b>AI Builder</b>
+
+        <button
+          class="btn mobile"
+          id="closeMenu"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="chat" id="chat">
+
+        <div class="welcome" id="welcome">
+
+          <div class="welcome-icon">
+            ✦
+          </div>
+
+          <h1>
+            Build with AI
+          </h1>
+
+          <p>
+            Describe what you want to build.
+            ForgeAI creates websites and keeps
+            editing your current project without
+            throwing away useful functionality.
+          </p>
+
+
+          <div class="suggestions">
+
+            <button
+              class="suggestion"
+              data-prompt="Create a premium modern developer portfolio with a hero section, about, skills, projects, testimonials, contact section and responsive animations."
+            >
+              💻 Developer portfolio
+            </button>
+
+            <button
+              class="suggestion"
+              data-prompt="Create a premium AI SaaS landing page with hero, features, pricing, testimonials, FAQ and responsive animations."
+            >
+              ✨ AI SaaS landing page
+            </button>
+
+            <button
+              class="suggestion"
+              data-prompt="Create a modern sneaker ecommerce website with products, filters, cart UI, sale section and responsive design."
+            >
+              👟 Sneaker store
+            </button>
+
+            <button
+              class="suggestion"
+              data-prompt="Create a professional dark analytics dashboard with sidebar, stats, charts, activity feed and responsive layout."
+            >
+              📊 Analytics dashboard
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROMPT -->
+
+      <div class="prompt-wrap">
+
+        <div class="prompt-box">
+
+          <textarea
+            id="prompt"
+            class="prompt"
+            placeholder="Describe what you want to build or change..."
+            spellcheck="false"
+          ></textarea>
+
+          <div class="prompt-row">
+
+            <span class="hint">
+              Enter to generate · Shift+Enter for a new line
+            </span>
+
+            <button
+              class="send"
+              id="send"
+              title="Build"
+            >
+              ↑
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================
+         WORKSPACE
+    ========================== -->
+
+    <section class="workspace">
+
+      <div class="workspace-head">
+
+        <div class="tabs">
+
+          <button
+            class="tab active"
+            id="previewTab"
+          >
+            Preview
+          </button>
+
+          <button
+            class="tab"
+            id="codeTab"
+          >
+            Code
+          </button>
+
+        </div>
+
+
+        <div class="tools">
+
+          <button
+            class="tool good"
+            id="checkBtn"
+          >
+            ✓ Check & Fix
+          </button>
+
+          <button
+            class="tool"
+            id="undoBtn"
+          >
+            ↶ Undo
+          </button>
+
+          <button
+            class="tool"
+            id="redoBtn"
+          >
+            ↷ Redo
+          </button>
+
+          <button
+            class="tool"
+            id="refreshBtn"
+          >
+            ↻ Refresh
+          </button>
+
+          <button
+            class="tool"
+            id="copyBtn"
+          >
+            Copy
+          </button>
+
+          <button
+            class="tool"
+            id="fullBtn"
+            title="Fullscreen"
+          >
+            ⛶
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           PREVIEW AREA
+      ========================== -->
+
+      <div
+        class="stage"
+        id="stage"
+      >
+
+        <div
+          class="devices"
+          id="devices"
+        >
+
+          <button
+            class="active"
+            data-device="desktop"
+          >
+            Desktop
+          </button>
+
+          <button
+            data-device="tablet"
+          >
+            Tablet
+          </button>
+
+          <button
+            data-device="mobile"
+          >
+            Mobile
+          </button>
+
+        </div>
+
+
+        <div
+          class="frame"
+          id="frame"
+        >
+
+          <div
+            class="empty"
+            id="empty"
+          >
+
+            <div class="empty-icon">
+              ✦
+            </div>
+
+            <h2>
+              Your generated website appears here
+            </h2>
+
+            <p>
+              Describe your idea to start building.
+            </p>
+
+          </div>
+
+
+          <iframe
+            id="preview"
+            sandbox="allow-scripts allow-forms allow-modals allow-popups"
+            title="Generated website preview"
+          ></iframe>
+
+        </div>
+
+
+        <!-- =========================
+             DIAGNOSTICS
+        ========================== -->
+
+        <div
+          class="diagnostics"
+          id="diagnostics"
+        >
+
+          <div class="diag-head">
+
+            <b>
+              Diagnostics
+            </b>
+
+            <button
+              class="tool"
+              id="closeDiag"
+            >
+              Close
+            </button>
+
+          </div>
+
+          <div
+            class="diag-list"
+            id="diagList"
+          ></div>
+
+        </div>
+
+
+        <!-- =========================
+             PLAN
+        ========================== -->
+
+        <div
+          class="plan"
+          id="plan"
+        >
+
+          <div class="plan-card">
+
+            <h3>
+              AI Build Plan
+            </h3>
+
+            <p>
+              ForgeAI will use this short plan before
+              generating the complete website.
+            </p>
+
+            <ol id="planList"></ol>
+
+            <div class="plan-actions">
+
+              <button id="skipPlan">
+                Skip
+              </button>
+
+              <button
+                class="build"
+                id="buildPlan"
+              >
+                Build
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             LOADING
+        ========================== -->
+
+        <div
+          class="loading"
+          id="loading"
+        >
+
+          <div class="loading-card">
+
+            <div class="load-row">
+
+              <div class="spinner"></div>
+
+              <div>
+
+                <div
+                  class="load-title"
+                  id="loadTitle"
+                >
+                  Creating your website
+                </div>
+
+                <div
+                  class="load-sub"
+                  id="loadSub"
+                >
+                  Connecting to Gemini...
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="track">
+
+              <div
+                class="bar"
+                id="bar"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CODE -->
+
+      <div
+        class="code"
+        id="codeArea"
+      >
+
+        <textarea
+          class="editor"
+          id="editor"
+          spellcheck="false"
+        ></textarea>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     API MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="apiModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2>
+        Connect Gemini API
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <p>
+        Enter your Google Gemini API key.
+        ForgeAI uses it directly from this browser.
+      </p>
+
+      <div class="key-wrap">
+
+        <input
+          id="apiKey"
+          class="key"
+          type="password"
+          placeholder="Paste Gemini API key..."
+          autocomplete="off"
+        >
+
+        <button
+          class="toggle"
+          id="toggleKey"
+        >
+          👁
+        </button>
+
+      </div>
+
+      <p class="security">
+        Your key is stored in this browser.
+        Browser-side API keys can be exposed.
+        Never put the key inside generated websites.
+      </p>
+
+    </div>
+
+
+    <div class="modal-foot">
+
+      <button
+        class="cancel"
+        id="cancelModal"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="save"
+        id="saveKey"
+      >
+        Connect
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     CONFIRM MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="confirmModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2>
+        New Project
+      </h2>
+
+      <button
+        class="close"
+        id="closeConfirm"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <p class="confirm-text">
+        Start a new project? Your current project can
+        still be restored with Undo if it was saved
+        in history.
+      </p>
+
+    </div>
+
+    <div class="modal-foot">
+
+      <button
+        class="cancel"
+        id="cancelConfirm"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="save"
+        id="confirmNew"
+      >
+        New Project
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+"use strict";
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+const ui = {
+
+  apiBtn:$("apiBtn"),
+  apiModal:$("apiModal"),
+  closeModal:$("closeModal"),
+  cancelModal:$("cancelModal"),
+  saveKey:$("saveKey"),
+  apiKey:$("apiKey"),
+  toggleKey:$("toggleKey"),
+
+  statusDot:$("statusDot"),
+  statusText:$("statusText"),
+
+  projectName:$("projectName"),
+
+  side:$("side"),
+  menuBtn:$("menuBtn"),
+  closeMenu:$("closeMenu"),
+
+  chat:$("chat"),
+  welcome:$("welcome"),
+
+  prompt:$("prompt"),
+  send:$("send"),
+
+  previewTab:$("previewTab"),
+  codeTab:$("codeTab"),
+
+  stage:$("stage"),
+  frame:$("frame"),
+  preview:$("preview"),
+  empty:$("empty"),
+
+  codeArea:$("codeArea"),
+  editor:$("editor"),
+
+  checkBtn:$("checkBtn"),
+  undoBtn:$("undoBtn"),
+  redoBtn:$("redoBtn"),
+  refreshBtn:$("refreshBtn"),
+  copyBtn:$("copyBtn"),
+  fullBtn:$("fullBtn"),
+  exportBtn:$("exportBtn"),
+  newBtn:$("newBtn"),
+
+  loading:$("loading"),
+  loadTitle:$("loadTitle"),
+  loadSub:$("loadSub"),
+  bar:$("bar"),
+
+  diagnostics:$("diagnostics"),
+  diagList:$("diagList"),
+  closeDiag:$("closeDiag"),
+
+  plan:$("plan"),
+  planList:$("planList"),
+  skipPlan:$("skipPlan"),
+  buildPlan:$("buildPlan"),
+
+  confirmModal:$("confirmModal"),
+  closeConfirm:$("closeConfirm"),
+  cancelConfirm:$("cancelConfirm"),
+  confirmNew:$("confirmNew"),
+
+  toast:$("toast")
+};
+
+
+/* =========================================================
+   STORAGE KEYS
+========================================================= */
+
+const STORAGE = {
+  apiKey:"forgeai_gemini_api_key",
+  code:"forgeai_project_code",
+  project:"forgeai_project_name",
+  history:"forgeai_history",
+  redo:"forgeai_redo",
+  interaction:"forgeai_interaction_id",
+  model:"forgeai_last_model"
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let apiKey =
+  localStorage.getItem(STORAGE.apiKey) || "";
+
+let interactionId =
+  localStorage.getItem(STORAGE.interaction) || null;
+
+let currentModel =
+  localStorage.getItem(STORAGE.model) || "";
+
+let generatedCode =
+  localStorage.getItem(STORAGE.code) || "";
+
+let projectName =
+  localStorage.getItem(STORAGE.project) ||
+  "Untitled project";
+
+let history = [];
+
+let redoHistory = [];
+
+let generating = false;
+
+let loadingTimer = null;
+
+let loadingHideTimer = null;
+
+let toastTimer = null;
+
+let pendingPrompt = "";
+
+let lastRequest = "";
+
+let runtimeErrors = [];
+
+let editorHistoryPending = false;
+
+let previewGeneration = 0;
+let projectRevision = 0;
+let committedCode = "";
+let activeRequestId = 0;
+
+
+/* =========================================================
+   STARTER PROJECT
+========================================================= */
+
+const STARTER_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Start Building</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+min-height:100vh;
+display:grid;
+place-items:center;
+background:#f5f7fb;
+color:#111827;
+font-family:Inter,system-ui,sans-serif;
+text-align:center;
+}
+main{
+max-width:600px;
+padding:40px;
+}
+h1{
+font-size:42px;
+margin:0 0 10px;
+}
+p{
+color:#6b7280;
+line-height:1.6;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Start Building</h1>
+<p>Describe your idea to ForgeAI and your website will appear here.</p>
+</main>
+</body>
+</html>`;
+
+
+/* =========================================================
+   LOAD SAVED HISTORY
+========================================================= */
+
+try{
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(STORAGE.history) || "[]"
+    );
+
+  if(Array.isArray(saved)){
+    history = saved
+      .filter(item => typeof item === "string" && item.length > 0)
+      .slice(-12);
+  }
+
+}catch{
+
+  history = [];
+
+}
+
+
+try{
+
+  const savedRedo =
+    JSON.parse(
+      localStorage.getItem(STORAGE.redo) || "[]"
+    );
+
+  if(Array.isArray(savedRedo)){
+    redoHistory = savedRedo
+      .filter(item => typeof item === "string" && item.length > 0)
+      .slice(-12);
+  }
+
+}catch{
+
+  redoHistory = [];
+
+}
+
+
+if(!generatedCode){
+  generatedCode = STARTER_HTML;
+}
+
+committedCode = generatedCode;
+
+
+/* =========================================================
+   INITIAL UI
+========================================================= */
+
+ui.editor.value = generatedCode;
+
+ui.projectName.textContent = projectName;
+
+
+/* =========================================================
+   PROJECT STATE HELPERS
+========================================================= */
+
+function syncCodeFromEditor(){
+
+  if(typeof ui.editor.value === "string" && ui.editor.value !== generatedCode){
+    generatedCode = ui.editor.value;
+  }
+
+  return generatedCode;
+}
+
+function commitProjectCode(code){
+
+  if(typeof code !== "string" || !code.trim()){
+    throw new Error("The project code is empty.");
+  }
+
+  generatedCode = code;
+  committedCode = code;
+  ui.editor.value = generatedCode;
+  projectRevision++;
+  saveProject();
+}
+
+function getProjectCodeForCopy(){
+  syncCodeFromEditor();
+  return generatedCode || "";
+}
+
+
+/* =========================================================
+   SAVE STATE
+========================================================= */
+
+function saveProject(){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE.code,
+      generatedCode
+    );
+
+    localStorage.setItem(
+      STORAGE.project,
+      projectName
+    );
+
+  }catch{
+
+    console.warn("Could not save project.");
+
+  }
+
+}
+
+
+function saveHistory(){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE.history,
+      JSON.stringify(history.slice(-12))
+    );
+
+    localStorage.setItem(
+      STORAGE.redo,
+      JSON.stringify(redoHistory.slice(-12))
+    );
+
+  }catch{
+
+    console.warn("Could not save history.");
+
+  }
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function updateStatus(){
+
+  const connected = !!apiKey;
+
+  ui.statusDot.classList.toggle(
+    "on",
+    connected
+  );
+
+  ui.statusText.textContent =
+    connected
+      ? "Gemini connected"
+      : "API not connected";
+
+  ui.apiBtn.textContent =
+    connected
+      ? "✓ API Connected"
+      : "🔑 Add API Key";
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(message){
+
+  ui.toast.textContent = message;
+
+  ui.toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(
+      () => ui.toast.classList.remove("show"),
+      2800
+    );
+
+}
+
+
+/* =========================================================
+   API MODAL
+========================================================= */
+
+function openApiModal(){
+
+  ui.apiKey.value = apiKey;
+
+  ui.apiModal.style.display = "flex";
+
+  setTimeout(
+    () => ui.apiKey.focus(),
+    60
+  );
+
+}
+
+
+function closeApiModal(){
+
+  ui.apiModal.style.display = "none";
+
+  ui.apiKey.type = "password";
+
+  ui.toggleKey.textContent = "👁";
+
+}
+
+
+ui.apiBtn.onclick = openApiModal;
+
+ui.closeModal.onclick = closeApiModal;
+
+ui.cancelModal.onclick = closeApiModal;
+
+
+ui.apiModal.onclick = event => {
+
+  if(event.target === ui.apiModal){
+    closeApiModal();
+  }
+
+};
+
+
+ui.toggleKey.onclick = () => {
+
+  const show =
+    ui.apiKey.type === "password";
+
+  ui.apiKey.type =
+    show
+      ? "text"
+      : "password";
+
+  ui.toggleKey.textContent =
+    show
+      ? "🙈"
+      : "👁";
+
+};
+
+
+ui.saveKey.onclick = () => {
+
+  const key =
+    ui.apiKey.value.trim();
+
+  if(!key){
+
+    toast("Enter your Gemini API key.");
+
+    return;
+
+  }
+
+  apiKey = key;
+
+  localStorage.setItem(
+    STORAGE.apiKey,
+    apiKey
+  );
+
+  interactionId = null;
+
+  localStorage.removeItem(
+    STORAGE.interaction
+  );
+
+  updateStatus();
+
+  closeApiModal();
+
+  toast("Gemini API connected.");
+
+};
+
+
+/* =========================================================
+   CONFIRM NEW PROJECT
+========================================================= */
+
+function openConfirm(){
+
+  ui.confirmModal.style.display = "flex";
+
+}
+
+
+function closeConfirm(){
+
+  ui.confirmModal.style.display = "none";
+
+}
+
+
+ui.newBtn.onclick = openConfirm;
+
+ui.closeConfirm.onclick = closeConfirm;
+
+ui.cancelConfirm.onclick = closeConfirm;
+
+
+ui.confirmModal.onclick = event => {
+
+  if(event.target === ui.confirmModal){
+    closeConfirm();
+  }
+
+};
+
+
+ui.confirmNew.onclick = () => {
+
+  generatedCode =
+    STARTER_HTML;
+
+  committedCode =
+    generatedCode;
+
+  projectRevision++;
+
+  projectName =
+    "Untitled project";
+
+  interactionId =
+    null;
+
+  localStorage.removeItem(
+    STORAGE.interaction
+  );
+
+  history = [];
+
+  redoHistory = [];
+
+  saveHistory();
+
+  saveProject();
+
+  ui.editor.value =
+    generatedCode;
+
+  ui.preview.style.display =
+    "none";
+
+  ui.empty.style.display =
+    "flex";
+
+  ui.projectName.textContent =
+    projectName;
+
+  ui.chat.innerHTML = "";
+
+  ui.chat.appendChild(
+    ui.welcome
+  );
+
+  ui.welcome.style.display =
+    "block";
+
+  ui.diagnostics.style.display =
+    "none";
+
+  closeConfirm();
+
+  toast("New project created.");
+
+};
+
+
+/* =========================================================
+   CHAT MESSAGES
+========================================================= */
+
+function addMessage(
+  type,
+  text,
+  changes = []
+){
+
+  const box =
+    document.createElement("div");
+
+  box.className =
+    "msg " + type;
+
+
+  const label =
+    document.createElement("div");
+
+  label.className =
+    "label";
+
+
+  const avatar =
+    document.createElement("span");
+
+  avatar.className =
+    "avatar";
+
+  avatar.textContent =
+    type === "user"
+      ? "U"
+      : "✦";
+
+
+  const name =
+    document.createElement("span");
+
+  name.textContent =
+    type === "user"
+      ? "You"
+      : "ForgeAI";
+
+
+  label.append(
+    avatar,
+    name
+  );
+
+
+  const content =
+    document.createElement("div");
+
+  content.className =
+    "content";
+
+  content.textContent =
+    text;
+
+
+  box.append(
+    label,
+    content
+  );
+
+
+  if(changes.length){
+
+    const changeBox =
+      document.createElement("div");
+
+    changeBox.className =
+      "changes";
+
+
+    const heading =
+      document.createElement("b");
+
+    heading.textContent =
+      "Changes made";
+
+
+    changeBox.append(
+      heading
+    );
+
+
+    changes
+      .slice(0,6)
+      .forEach(change => {
+
+        const item =
+          document.createElement("div");
+
+        item.textContent =
+          change;
+
+        changeBox.append(
+          item
+        );
+
+      });
+
+
+    box.append(
+      changeBox
+    );
+
+  }
+
+
+  if(type === "assistant"){
+
+    const quick =
+      document.createElement("div");
+
+    quick.className =
+      "quick";
+
+
+    const actions = [
+
+      [
+        "Fix issues",
+        "Check the current website for obvious bugs and fix them without removing working functionality."
+      ],
+
+      [
+        "Improve design",
+        "Improve the visual design of the current website without breaking or removing existing functionality."
+      ],
+
+      [
+        "Make responsive",
+        "Make the current website responsive on phones, tablets and desktop without removing existing features."
+      ],
+
+      [
+        "Add feature",
+        "Add one useful feature to the current website without breaking existing functionality."
+      ]
+
+    ];
+
+
+    actions.forEach(
+      ([label,prompt]) => {
+
+        const button =
+          document.createElement("button");
+
+        button.textContent =
+          label;
+
+        button.onclick = () => {
+
+          ui.prompt.value =
+            prompt;
+
+          ui.prompt.focus();
+
+        };
+
+        quick.append(
+          button
+        );
+
+      }
+    );
+
+
+    box.append(
+      quick
+    );
+
+  }
+
+
+  ui.chat.append(
+    box
+  );
+
+  ui.chat.scrollTop =
+    ui.chat.scrollHeight;
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function startLoading(){
+
+  clearTimeout(loadingHideTimer);
+
+  ui.loading.style.display =
+    "flex";
+
+  ui.bar.style.width =
+    "4%";
+
+  const stages = [
+
+    [
+      "Analyzing request",
+      "Understanding your idea..."
+    ],
+
+    [
+      "Planning changes",
+      "Preparing the build..."
+    ],
+
+    [
+      "Building website",
+      "Generating HTML, CSS and JavaScript..."
+    ],
+
+    [
+      "Checking code",
+      "Validating the generated document..."
+    ],
+
+    [
+      "Preparing preview",
+      "Rendering your website..."
+    ]
+
+  ];
+
+
+  let index = 0;
+
+  ui.loadTitle.textContent =
+    stages[0][0];
+
+  ui.loadSub.textContent =
+    stages[0][1];
+
+
+  clearInterval(
+    loadingTimer
+  );
+
+
+  loadingTimer =
+    setInterval(() => {
+
+      index++;
+
+      if(index >= stages.length){
+
+        clearInterval(
+          loadingTimer
+        );
+
+        return;
+
+      }
+
+
+      ui.loadTitle.textContent =
+        stages[index][0];
+
+      ui.loadSub.textContent =
+        stages[index][1];
+
+      ui.bar.style.width =
+        Math.min(
+          92,
+          15 + index * 18
+        ) + "%";
+
+    },850);
+
+}
+
+
+function updateLoading(
+  title,
+  subtitle,
+  progress
+){
+
+  ui.loadTitle.textContent =
+    title;
+
+  ui.loadSub.textContent =
+    subtitle;
+
+  ui.bar.style.width =
+    Math.min(
+      96,
+      Math.max(4,progress)
+    ) + "%";
+
+}
+
+
+function stopLoading(){
+
+  clearInterval(
+    loadingTimer
+  );
+
+  clearTimeout(loadingHideTimer);
+
+  ui.bar.style.width =
+    "100%";
+
+  loadingHideTimer = setTimeout(() => {
+
+    ui.loading.style.display =
+      "none";
+
+    ui.bar.style.width =
+      "4%";
+
+  },350);
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function snapshot(){
+
+  if(!generatedCode){
+    return;
+  }
+
+  history.push(
+    generatedCode
+  );
+
+  history =
+    history.slice(-12);
+
+  redoHistory = [];
+
+  saveHistory();
+
+}
+
+
+function undo(){
+
+  if(!history.length){
+
+    toast("Nothing to undo.");
+
+    return;
+
+  }
+
+
+  redoHistory.push(
+    generatedCode
+  );
+
+
+  generatedCode =
+    history.pop();
+
+  committedCode =
+    generatedCode;
+  projectRevision++;
+
+
+  saveHistory();
+
+  ui.editor.value =
+    generatedCode;
+
+  saveProject();
+
+  render();
+
+  toast(
+    "Previous version restored."
+  );
+
+}
+
+
+function redo(){
+
+  if(!redoHistory.length){
+
+    toast("Nothing to redo.");
+
+    return;
+
+  }
+
+
+  history.push(
+    generatedCode
+  );
+
+
+  generatedCode =
+    redoHistory.pop();
+
+  committedCode =
+    generatedCode;
+  projectRevision++;
+
+
+  saveHistory();
+
+  ui.editor.value =
+    generatedCode;
+
+  saveProject();
+
+  render();
+
+  toast(
+    "Redo completed."
+  );
+
+}
+
+
+ui.undoBtn.onclick =
+  undo;
+
+ui.redoBtn.onclick =
+  redo;
+
+
+/* =========================================================
+   PREVIEW RUNTIME BRIDGE
+========================================================= */
+
+function buildPreviewDocument(
+  html,
+  generation
+){
+
+  if(!html){
+    return "";
+  }
+
+
+  const bridge = `
+<script>
+(function(){
+
+  function send(type,message){
+
+    try{
+
+      parent.postMessage({
+        source:"forgeai-preview",
+        generation:${generation},
+        type:type,
+        message:String(message || "")
+      },"*");
+
+    }catch(e){}
+
+  }
+
+  window.addEventListener(
+    "error",
+    function(event){
+
+      send(
+        "runtime-error",
+        event.message ||
+        "Unknown JavaScript error"
+      );
+
+    }
+  );
+
+  window.addEventListener(
+    "unhandledrejection",
+    function(event){
+
+      send(
+        "runtime-error",
+        event.reason?.message ||
+        event.reason ||
+        "Unhandled promise rejection"
+      );
+
+    }
+  );
+
+})();
+<\/script>
+`;
+
+
+  if(/<\/body>/i.test(html)){
+
+    return html.replace(
+      /<\/body>/i,
+      bridge + "</body>"
+    );
+
+  }
+
+
+  return html + bridge;
+
+}
+
+
+window.addEventListener(
+  "message",
+  event => {
+
+    if(
+      event.data?.source !==
+      "forgeai-preview" ||
+      event.source !==
+      ui.preview.contentWindow ||
+      event.data?.generation !==
+      previewGeneration
+    ){
+      return;
+    }
+
+
+    if(
+      event.data.type ===
+      "runtime-error"
+    ){
+
+      runtimeErrors.push(
+        event.data.message
+      );
+
+      runtimeErrors =
+        runtimeErrors.slice(-10);
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  if(!generatedCode){
+
+    ui.empty.style.display =
+      "flex";
+
+    ui.preview.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  ui.empty.style.display =
+    "none";
+
+  ui.preview.style.display =
+    "block";
+
+
+  runtimeErrors = [];
+  previewGeneration++;
+  editorHistoryPending = false;
+
+
+  ui.preview.srcdoc =
+    buildPreviewDocument(
+      generatedCode,
+      previewGeneration
+    );
+
+}
+
+
+ui.preview.addEventListener(
+  "load",
+  () => {
+
+    if(runtimeErrors.length){
+
+      toast(
+        "Preview loaded with runtime warnings."
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   DEVICE PREVIEW
+========================================================= */
+
+document
+  .querySelectorAll(".devices button")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      document
+        .querySelectorAll(".devices button")
+        .forEach(
+          item =>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+
+      button.classList.add(
+        "active"
+      );
+
+
+      ui.stage.classList.remove(
+        "tablet",
+        "mobile"
+      );
+
+
+      const device =
+        button.dataset.device;
+
+
+      if(device !== "desktop"){
+
+        ui.stage.classList.add(
+          device
+        );
+
+      }
+
+    };
+
+  });
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+ui.previewTab.onclick = () => {
+
+  ui.previewTab.classList.add(
+    "active"
+  );
+
+  ui.codeTab.classList.remove(
+    "active"
+  );
+
+  ui.stage.style.display =
+    "block";
+
+  ui.codeArea.style.display =
+    "none";
+
+};
+
+
+ui.codeTab.onclick = () => {
+
+  ui.codeTab.classList.add(
+    "active"
+  );
+
+  ui.previewTab.classList.remove(
+    "active"
+  );
+
+  ui.stage.style.display =
+    "none";
+
+  ui.codeArea.style.display =
+    "block";
+
+  ui.editor.value =
+    generatedCode;
+
+};
+
+
+/* =========================================================
+   MANUAL CODE EDITING
+========================================================= */
+
+let editorSaveTimer = null;
+
+ui.editor.addEventListener(
+  "input",
+  () => {
+
+    if(
+      !editorHistoryPending &&
+      ui.editor.value !== generatedCode
+    ){
+      if(generatedCode){
+        history.push(generatedCode);
+        history = history.slice(-12);
+        redoHistory = [];
+        saveHistory();
+      }
+
+      editorHistoryPending = true;
+    }
+
+    generatedCode =
+      ui.editor.value;
+
+    projectRevision++;
+
+    clearTimeout(
+      editorSaveTimer
+    );
+
+    editorSaveTimer =
+      setTimeout(
+        saveProject,
+        500
+      );
+
+  }
+);
+
+ui.editor.addEventListener(
+  "blur",
+  () => {
+    editorHistoryPending = false;
+  }
+);
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+ui.refreshBtn.onclick = () => {
+
+  if(!generatedCode){
+
+    toast(
+      "Nothing to refresh."
+    );
+
+    return;
+
+  }
+
+  render();
+
+  toast(
+    "Preview refreshed."
+  );
+
+};
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+ui.copyBtn.onclick =
+  async () => {
+
+    const codeToCopy =
+      getProjectCodeForCopy();
+
+    if(!codeToCopy){
+
+      toast(
+        "There is no code to copy."
+      );
+
+      return;
+
+    }
+
+
+    /* The editor is the visible source of truth. Sync it before copying so
+       a just-completed AI edit can never copy an older in-memory snapshot. */
+
+    if(!codeToCopy){
+      toast(
+        "There is no code to copy."
+      );
+      return;
+    }
+
+
+    try{
+
+      await navigator.clipboard.writeText(
+        codeToCopy
+      );
+
+    }catch{
+
+      ui.editor.focus();
+
+      ui.editor.select();
+
+      document.execCommand(
+        "copy"
+      );
+
+    }
+
+
+    toast(
+      "Code copied."
+    );
+
+  };
+
+
+/* =========================================================
+   EXPORT
+========================================================= */
+
+ui.exportBtn.onclick = () => {
+
+  if(!generatedCode){
+
+    toast(
+      "Nothing to export."
+    );
+
+    return;
+
+  }
+
+
+  const blob =
+    new Blob(
+      [generatedCode],
+      {
+        type:
+          "text/html;charset=utf-8"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+  link.href =
+    url;
+
+  link.download =
+    "forgeai-website.html";
+
+  document.body.appendChild(
+    link
+  );
+
+  link.click();
+
+  link.remove();
+
+  URL.revokeObjectURL(
+    url
+  );
+
+
+  toast(
+    "HTML exported."
+  );
+
+};
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+ui.fullBtn.onclick =
+  async () => {
+
+    try{
+
+      if(!document.fullscreenElement){
+
+        await ui.frame.requestFullscreen();
+
+      }else{
+
+        await document.exitFullscreen();
+
+      }
+
+    }catch{
+
+      toast(
+        "Fullscreen is unavailable."
+      );
+
+    }
+
+  };
+
+
+/* =========================================================
+   HTML CLEANER
+========================================================= */
+
+function cleanHTML(text){
+
+  if(
+    typeof text !==
+    "string"
+  ){
+
+    return "";
+
+  }
+
+
+  let result =
+    text.trim();
+
+
+  result =
+    result
+      .replace(
+        /^```html\s*/i,
+        ""
+      )
+      .replace(
+        /^```HTML\s*/i,
+        ""
+      )
+      .replace(
+        /^```\s*/,
+        ""
+      )
+      .replace(
+        /\s*```$/,
+        ""
+      );
+
+
+  const start =
+    result.search(
+      /<!doctype\s+html|<html[\s>]/i
+    );
+
+
+  if(start > 0){
+
+    result =
+      result.substring(
+        start
+      );
+
+  }
+
+
+  const end =
+    result
+      .toLowerCase()
+      .lastIndexOf(
+        "</html>"
+      );
+
+
+  if(end !== -1){
+
+    result =
+      result.substring(
+        0,
+        end + 7
+      );
+
+  }
+
+
+  return result.trim();
+
+}
+
+
+/* =========================================================
+   GEMINI OUTPUT EXTRACTOR
+========================================================= */
+
+function extractText(data){
+
+  if(
+    typeof data?.output_text ===
+    "string" &&
+    data.output_text.trim()
+  ){
+
+    return data.output_text.trim();
+
+  }
+
+
+  let result = "";
+
+
+  if(
+    Array.isArray(
+      data?.candidates
+    )
+  ){
+
+    for(
+      const candidate
+      of data.candidates
+    ){
+
+      const parts =
+        candidate?.content?.parts;
+
+
+      if(
+        !Array.isArray(parts)
+      ){
+        continue;
+      }
+
+
+      for(
+        const part
+        of parts
+      ){
+
+        if(
+          typeof part?.text ===
+          "string"
+        ){
+
+          result +=
+            part.text;
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  if(
+    Array.isArray(
+      data?.steps
+    )
+  ){
+
+    for(
+      const step
+      of data.steps
+    ){
+
+      if(
+        !Array.isArray(
+          step?.content
+        )
+      ){
+        continue;
+      }
+
+
+      for(
+        const block
+        of step.content
+      ){
+
+        if(
+          block?.type ===
+          "text"
+        ){
+
+          result +=
+            block.text || "";
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  return result.trim();
+
+}
+
+
+/* =========================================================
+   API ERROR
+========================================================= */
+
+function makeAPIError(
+  message,
+  status,
+  model
+){
+
+  const error =
+    new Error(
+      message
+    );
+
+  error.status =
+    status;
+
+  error.model =
+    model;
+
+  return error;
+
+}
+
+
+/* =========================================================
+   TEMPORARY ERROR DETECTION
+========================================================= */
+
+function isTemporaryError(
+  error
+){
+
+  const text =
+    String(
+      error?.message || ""
+    ).toLowerCase();
+
+
+  return (
+
+    error?.status === 408 ||
+
+    error?.status === 425 ||
+
+    error?.status === 429 ||
+
+    error?.status === 500 ||
+
+    error?.status === 502 ||
+
+    error?.status === 503 ||
+
+    error?.status === 504 ||
+
+    text.includes("429") ||
+
+    text.includes("503") ||
+
+    text.includes("500") ||
+
+    text.includes("502") ||
+
+    text.includes("504") ||
+
+    text.includes("high demand") ||
+
+    text.includes("overloaded") ||
+
+    text.includes("temporarily") ||
+
+    text.includes("unavailable") ||
+
+    text.includes("resource_exhausted") ||
+
+    text.includes("rate limit")
+
+  );
+
+}
+
+
+/* =========================================================
+   MODEL FALLBACK LIST
+========================================================= */
+
+const AI_MODELS = [
+
+  "gemini-3.7-flash",
+
+  "gemini-3.6-flash",
+
+  "gemini-3.5-flash"
+
+];
+
+
+/* =========================================================
+   SYSTEM INSTRUCTION
+========================================================= */
+
+const SYSTEM_INSTRUCTION = `
+You are ForgeAI, a professional AI website and application builder.
+
+Your job is to create and modify complete functional websites.
+
+STRICT OUTPUT:
+
+1. For a NEW project, return ONLY one complete HTML document.
+2. For an EXISTING project edit, return ONLY the requested JSON patch operations.
+3. Never use Markdown code fences.
+4. Never return prose outside the required output format.
+5. Never explain the code outside the HTML document.
+6. Put all CSS inside <style> tags.
+7. Put all JavaScript inside <script> tags.
+8. Use vanilla HTML, CSS and JavaScript.
+9. Do not require React.
+10. Do not require Node.js.
+11. Do not require a build system.
+12. Make the website responsive.
+13. Make buttons and interactions functional.
+14. Create polished professional UI.
+15. Use semantic HTML where appropriate.
+16. Add smooth purposeful animations when useful.
+17. Never include API keys, secrets or credentials.
+18. The generated page must work inside a sandboxed iframe.
+19. Avoid dependencies that require a build process.
+20. For a new project, generate the COMPLETE website.
+21. For an existing project, make the smallest safe incremental changes.
+22. Never return analysis.
+23. Never intentionally remove working functionality.
+24. Preserve unrelated code and features.
+
+MOST IMPORTANT EDITING RULE:
+
+When CURRENT WEBSITE is supplied, preserve every useful working feature.
+
+Do NOT rebuild unrelated sections.
+
+Do NOT remove buttons, functionality, forms, navigation,
+animations, layouts, interactions or useful code unless
+the user's request specifically requires changing them.
+
+When fixing a bug, fix the bug while preserving unrelated
+working functionality.
+
+When adding a feature, integrate it into the current website.
+
+When improving design, preserve existing functionality.
+
+For patch mode, the result is a JSON patch; the final project must remain a complete valid HTML document after applying it.
+`;
+
+
+/* =========================================================
+   REQUEST BUILDER
+========================================================= */
+
+function buildProjectContext(request){
+
+  const code = generatedCode || "";
+  if(!code) return "";
+
+  const normalized = String(request || "").toLowerCase();
+  const broad = /entire|whole|all|global|site-wide|everywhere|responsive|mobile|tablet|desktop|layout|refactor|architecture|performance|fix all|audit|debug/i.test(normalized);
+
+  /* Keep the first/last structural regions plus request-relevant windows.
+     This avoids sending thousands of irrelevant characters on normal edits. */
+  const maxChars = broad ? 42000 : 18000;
+  if(code.length <= maxChars) return code;
+
+  const candidates = [];
+  const keywords = normalized
+    .replace(/[^a-z0-9_-]+/g, " ")
+    .split(/\s+/)
+    .filter(word => word.length >= 4)
+    .filter((word, i, arr) => arr.indexOf(word) === i)
+    .slice(0, 24);
+
+  for(const keyword of keywords){
+    let from = 0;
+    let hits = 0;
+    while(hits < 3){
+      const index = code.toLowerCase().indexOf(keyword, from);
+      if(index < 0) break;
+      candidates.push(Math.max(0, index - 900));
+      from = index + keyword.length;
+      hits++;
+    }
+  }
+
+  candidates.push(0, Math.max(0, code.length - 3000));
+  candidates.sort((a,b) => a - b);
+
+  const windows = [];
+  let total = 0;
+  for(const startIndex of candidates){
+    const endIndex = Math.min(code.length, startIndex + (broad ? 4200 : 2400));
+    const piece = code.slice(startIndex, endIndex);
+    if(!piece) continue;
+
+    const alreadyCovered = windows.some(w => startIndex >= w.start && endIndex <= w.end);
+    if(alreadyCovered) continue;
+
+    const remaining = maxChars - total;
+    if(remaining <= 0) break;
+
+    const clipped = piece.slice(0, remaining);
+    windows.push({start:startIndex, end:endIndex, text:clipped});
+    total += clipped.length;
+  }
+
+  windows.sort((a,b) => a.start - b.start);
+
+  return windows.map((window, index) =>
+    `--- CONTEXT ${index + 1} ---\n${window.text}`
+  ).join("\n\n");
+}
+
+
+function buildAIInput(
+  userRequest,
+  mode = "patch"
+){
+
+  if(mode === "full"){
+
+    return `
+USER REQUEST:
+
+${userRequest}
+
+
+CURRENT WEBSITE:
+
+${generatedCode}
+
+
+CURRENT PROJECT REQUIREMENTS:
+
+- Inspect the supplied CURRENT WEBSITE as a whole before changing it.
+- If the request is an audit/debug/fix request, fix every issue you can verify from the supplied code.
+- Preserve useful existing functionality.
+- Do not remove unrelated working code.
+- Fix requested problems.
+- Keep existing functionality unless modification is required.
+- Make all requested interactions actually work.
+- Keep the final website responsive.
+- Return the complete HTML document.
+
+FINAL OUTPUT:
+
+Return ONLY the complete HTML document.
+Start with <!DOCTYPE html>.
+End with </html>.
+`;
+
+  }
+
+  const context = buildProjectContext(userRequest);
+
+  return `
+USER REQUEST:
+
+${userRequest}
+
+
+CURRENT WEBSITE RELEVANT CONTEXT:
+
+${context}
+
+
+EDIT MODE — FAST INCREMENTAL PATCH
+
+The context above is a selected subset of the current project. Do not assume
+missing code is safe to change. Make the smallest safe edit and target only
+text that appears EXACTLY in the supplied context.
+
+Do NOT regenerate the whole website.
+Do NOT return the complete HTML document.
+Return ONLY valid JSON describing the smallest safe changes needed.
+
+JSON FORMAT:
+{
+  "changes": [
+    {
+      "type": "replace",
+      "find": "EXACT existing text from the supplied context",
+      "replace": "replacement text"
+    }
+  ]
+}
+
+Allowed types:
+- replace: replace the first exact match
+- replace_all: replace every exact match
+- insert_after: insert text immediately after the exact match
+- insert_before: insert text immediately before the exact match
+- delete: delete the exact match
+
+Rules:
+1. Every find value MUST be copied exactly from the supplied context.
+2. Never target text that was not supplied in the context.
+3. Make the smallest possible edit.
+4. Preserve all unrelated working functionality.
+5. Never delete a feature unless the user explicitly asks.
+6. If adding JavaScript, insert it into the existing script when possible.
+7. If adding CSS, insert it into the existing style when possible.
+8. Keep HTML valid.
+9. Return JSON only. No explanation.
+10. If the requested change cannot be safely made from the supplied context,
+    return {"changes":[],"needs_full_context":true} rather than guessing.
+`;
+}
+
+
+/* =========================================================
+   GEMINI REQUEST
+========================================================= */
+
+async function requestGeminiModel(
+  model,
+  input,
+  mode = "patch"
+){
+
+  if(!apiKey){
+
+    throw new Error(
+      "No Gemini API key is connected."
+    );
+
+  }
+
+
+  const endpoint =
+    "https://generativelanguage.googleapis.com/v1beta/models/" +
+    encodeURIComponent(model) +
+    ":generateContent";
+
+
+  const body = {
+
+    contents:[
+
+      {
+        role:"user",
+        parts:[
+          {
+            text:input
+          }
+        ]
+      }
+
+    ],
+
+    systemInstruction:{
+      parts:[
+        {
+          text:
+            SYSTEM_INSTRUCTION
+        }
+      ]
+    },
+
+    generationConfig:{
+      maxOutputTokens:
+        mode === "full" ? 60000 : 8000,
+      thinkingConfig:{
+        thinkingLevel:
+          mode === "full" ? "medium" : "low"
+      }
+    }
+
+  };
+
+
+  const response =
+    await fetch(
+      endpoint,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json",
+
+          "x-goog-api-key":
+            apiKey
+        },
+
+        body:
+          JSON.stringify(body)
+      }
+    );
+
+
+  let data = {};
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch{
+
+    throw makeAPIError(
+      "Gemini returned an invalid response.",
+      response.status,
+      model
+    );
+
+  }
+
+
+  if(!response.ok){
+
+    const message =
+      data?.error?.message ||
+      data?.message ||
+      `Gemini request failed with HTTP ${response.status}.`;
+
+
+    throw makeAPIError(
+      message,
+      response.status,
+      model
+    );
+
+  }
+
+
+  const output =
+    extractText(data);
+
+
+  if(!output){
+
+    throw makeAPIError(
+      "Gemini completed the request but returned no text.",
+      200,
+      model
+    );
+
+  }
+
+
+  if(mode === "patch"){
+
+    const patch =
+      parsePatchResponse(
+        output
+      );
+
+    if(!patch.changes.length){
+      const error = makeAPIError(
+        patch.needs_full_context
+          ? "The requested edit needs broader project context."
+          : "Gemini returned an empty edit patch.",
+        200,
+        model
+      );
+      error.needsFullContext = patch.needs_full_context;
+      throw error;
+    }
+
+    return patch;
+
+  }
+
+
+  const html =
+    cleanHTML(
+      output
+    );
+
+
+  if(
+    !html ||
+    !/<html[\s>]/i.test(html) ||
+    !/<\/html>/i.test(html)
+  ){
+
+    throw makeAPIError(
+      "Gemini did not return a complete HTML document.",
+      200,
+      model
+    );
+
+  }
+
+
+  return html;
+
+}
+
+
+/* =========================================================
+   PATCH PARSER / APPLIER
+========================================================= */
+
+function parsePatchResponse(
+  output
+){
+
+  let text =
+    String(output || "").trim();
+
+  text =
+    text
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .trim();
+
+  let data;
+
+  try{
+    data = JSON.parse(text);
+  }catch(error){
+    const first = text.indexOf("{");
+    const last = text.lastIndexOf("}");
+
+    if(first < 0 || last <= first){
+      throw makeAPIError(
+        "Gemini returned an invalid edit patch.",
+        200,
+        currentModel
+      );
+    }
+
+    try{
+      data = JSON.parse(
+        text.slice(first, last + 1)
+      );
+    }catch{
+      throw makeAPIError(
+        "Gemini returned malformed edit JSON.",
+        200,
+        currentModel
+      );
+    }
+  }
+
+  if(!data || !Array.isArray(data.changes)){
+    throw makeAPIError(
+      "Gemini returned an invalid edit patch structure.",
+      200,
+      currentModel
+    );
+  }
+
+  return {
+    changes:Array.isArray(data.changes)
+      ? data.changes
+          .filter(change =>
+            change &&
+            typeof change.type === "string" &&
+            typeof change.find === "string"
+          )
+          .slice(0,40)
+      : [],
+    needs_full_context: data.needs_full_context === true
+  };
+
+}
+
+
+function applyPatch(
+  code,
+  patch
+){
+
+  let result =
+    code;
+
+  for(const change of patch.changes){
+
+    const find =
+      change.find;
+
+    if(!find){
+      continue;
+    }
+
+    const type =
+      change.type;
+
+    if(type === "replace"){
+
+      const index =
+        result.indexOf(find);
+
+      if(index < 0){
+        throw new Error(
+          "AI patch target was not found."
+        );
+      }
+
+      if(result.indexOf(find, index + 1) !== -1){
+        throw new Error(
+          "AI patch target is ambiguous."
+        );
+      }
+
+      const replacement =
+        typeof change.replace === "string"
+          ? change.replace
+          : "";
+
+      result =
+        result.slice(0,index) +
+        replacement +
+        result.slice(index + find.length);
+
+    }else if(type === "replace_all"){
+
+      if(!result.includes(find)){
+        throw new Error(
+          "AI patch target was not found."
+        );
+      }
+
+      result =
+        result.split(find).join(
+          typeof change.replace === "string"
+            ? change.replace
+            : ""
+        );
+
+    }else if(type === "insert_after"){
+
+      const index =
+        result.indexOf(find);
+
+      if(index < 0){
+        throw new Error(
+          "AI patch target was not found."
+        );
+      }
+
+      if(result.indexOf(find, index + 1) !== -1){
+        throw new Error(
+          "AI patch target is ambiguous."
+        );
+      }
+
+      result =
+        result.slice(0,index + find.length) +
+        String(change.insert || change.replace || "") +
+        result.slice(index + find.length);
+
+    }else if(type === "insert_before"){
+
+      const index =
+        result.indexOf(find);
+
+      if(index < 0){
+        throw new Error(
+          "AI patch target was not found."
+        );
+      }
+
+      if(result.indexOf(find, index + 1) !== -1){
+        throw new Error(
+          "AI patch target is ambiguous."
+        );
+      }
+
+      result =
+        result.slice(0,index) +
+        String(change.insert || change.replace || "") +
+        result.slice(index);
+
+    }else if(type === "delete"){
+
+      const index =
+        result.indexOf(find);
+
+      if(index < 0){
+        throw new Error(
+          "AI patch target was not found."
+        );
+      }
+
+      if(result.indexOf(find, index + 1) !== -1){
+        throw new Error(
+          "AI patch target is ambiguous."
+        );
+      }
+
+      result =
+        result.slice(0,index) +
+        result.slice(index + find.length);
+
+    }else{
+      throw new Error(
+        "AI returned an unsupported patch operation."
+      );
+    }
+  }
+
+  if(!/<html[\s>]/i.test(result) || !/<\/html>/i.test(result)){
+    throw new Error(
+      "AI patch produced an incomplete HTML document."
+    );
+  }
+
+  return result;
+}
+
+
+/* =========================================================
+   RETRY DELAY
+========================================================= */
+
+function retryDelay(
+  attempt
+){
+
+  const base =
+    1200;
+
+  const exponential =
+    base *
+    Math.pow(
+      2,
+      attempt - 1
+    );
+
+
+  const jitter =
+    Math.floor(
+      Math.random() *
+      500
+    );
+
+
+  return exponential +
+    jitter;
+
+}
+
+
+/* =========================================================
+   SMART GEMINI BUILDER
+========================================================= */
+
+function needsWholeProjectEdit(request){
+
+  const text = String(request || "").toLowerCase();
+
+  return /\b(audit|debug|diagnos|check.*bugs|find.*bugs|fix.*bugs|fix.*issues|fix.*errors|all.*bugs|all.*issues|all.*errors|entire|whole|site[- ]wide|everywhere|architecture|refactor|restructure|rewrite|optimi[sz]e|performance|responsive|mobile|tablet|desktop|accessibility|security|seo|make.*fully|review.*code|inspect.*code|check.*code)\b/i.test(text);
+
+}
+
+async function callGemini(
+  userRequest
+){
+
+  if(!apiKey){
+    throw new Error(
+      "No Gemini API key is connected."
+    );
+  }
+
+  const isNewProject =
+    !generatedCode ||
+    generatedCode === STARTER_HTML;
+
+  const mode =
+    isNewProject || needsWholeProjectEdit(userRequest)
+      ? "full"
+      : "patch";
+
+  const input =
+    buildAIInput(
+      userRequest,
+      mode
+    );
+
+  let lastError = null;
+
+  const modelOrder =
+    [
+      currentModel,
+      ...AI_MODELS
+    ].filter(
+      (model,index,array) =>
+        model &&
+        AI_MODELS.includes(model) &&
+        array.indexOf(model) === index
+    );
+
+  for(
+    let modelIndex = 0;
+    modelIndex < modelOrder.length;
+    modelIndex++
+  ){
+
+    const model =
+      modelOrder[modelIndex];
+
+    /* Fast path: one attempt first. Retries happen only for temporary errors. */
+    try{
+
+      updateLoading(
+        mode === "patch"
+          ? "Applying AI edit"
+          : "Building with " + model,
+        mode === "patch"
+          ? "Making a targeted change..."
+          : "Generating your website...",
+        mode === "patch" ? 35 : 25
+      );
+
+      const result =
+        await requestGeminiModel(
+          model,
+          input,
+          mode
+        );
+
+      let finalCode;
+
+      if(mode === "patch"){
+        finalCode =
+          applyPatch(
+            generatedCode,
+            result
+          );
+
+        if(finalCode === generatedCode){
+          const error = new Error(
+            "AI edit produced no changes."
+          );
+          error.noChange = true;
+          throw error;
+        }
+      }else{
+        finalCode = result;
+
+        if(finalCode === generatedCode && generatedCode){
+          const error = new Error(
+            "AI build produced no changes."
+          );
+          error.noChange = true;
+          throw error;
+        }
+      }
+
+      currentModel = model;
+      localStorage.setItem(
+        STORAGE.model,
+        model
+      );
+
+      return finalCode;
+
+    }catch(error){
+
+      lastError = error;
+
+      console.warn(
+        "ForgeAI model failure:",
+        model,
+        error
+      );
+
+      const errorText =
+        String(error?.message || "").toLowerCase();
+
+      if(error.status === 401 || error.status === 403){
+        throw error;
+      }
+
+      /* If the patch cannot be applied, do one full-document recovery. */
+      if(
+        mode === "patch" &&
+        (
+          errorText.includes("patch") ||
+          errorText.includes("target was not found") ||
+          errorText.includes("malformed") ||
+          errorText.includes("invalid edit") ||
+          error.needsFullContext
+        )
+      ){
+
+        try{
+          updateLoading(
+            "Recovering edit",
+            "The targeted edit could not be applied, rebuilding safely...",
+            55
+          );
+
+          const fullInput =
+            buildAIInput(
+              userRequest,
+              "full"
+            );
+
+          const recovered =
+            await requestGeminiModel(
+              model,
+              fullInput,
+              "full"
+            );
+
+          currentModel = model;
+          localStorage.setItem(
+            STORAGE.model,
+            model
+          );
+
+          return recovered;
+
+        }catch(recoveryError){
+          lastError = recoveryError;
+        }
+      }
+
+      if(isTemporaryError(error)){
+
+        updateLoading(
+          "Gemini is temporarily busy",
+          "Retrying once automatically...",
+          50
+        );
+
+        await sleep(
+          Math.min(
+            retryDelay(1),
+            1800
+          )
+        );
+
+        try{
+          const retryResult =
+            await requestGeminiModel(
+              model,
+              input,
+              mode
+            );
+
+          const retryCode =
+            mode === "patch"
+              ? applyPatch(generatedCode, retryResult)
+              : retryResult;
+
+          if(retryCode === generatedCode){
+            throw new Error("AI retry produced no changes.");
+          }
+
+          currentModel = model;
+          localStorage.setItem(
+            STORAGE.model,
+            model
+          );
+
+          return retryCode;
+
+        }catch(retryError){
+          lastError = retryError;
+        }
+      }
+
+      /* Move immediately to the next model for model/config errors. */
+      continue;
+    }
+  }
+
+  throw(
+    lastError ||
+    new Error(
+      "All Gemini models are temporarily unavailable."
+    )
+  );
+}
+
+
+/* =========================================================
+   SLEEP
+========================================================= */
+
+function sleep(
+  milliseconds
+){
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        milliseconds
+      )
+  );
+
+}
+
+
+/* =========================================================
+   STATIC CODE CHECKER
+========================================================= */
+
+function staticCheck(
+  code,
+  options = {}
+){
+
+  const includeRuntimeErrors =
+    options.includeRuntimeErrors !== false;
+
+  const issues = [];
+
+
+  if(
+    !code ||
+    !/<html[\s>]/i.test(code) ||
+    !/<\/html>/i.test(code)
+  ){
+
+    issues.push({
+      level:"critical",
+      title:"Incomplete HTML",
+      description:
+        "The HTML document is incomplete or missing the root element."
+    });
+
+  }
+
+
+  if(!/<meta[^>]+viewport/i.test(code || "")){
+
+    issues.push({
+      level:"warning",
+      title:"Viewport missing",
+      description:
+        "Mobile rendering may not behave correctly."
+    });
+
+  }
+
+
+  if(!/<title\b/i.test(code || "")){
+
+    issues.push({
+      level:"warning",
+      title:"Page title missing",
+      description:
+        "Add a title for the browser and basic SEO."
+    });
+
+  }
+
+
+  if(code){
+
+    try{
+
+      const parser =
+        new DOMParser();
+
+      const doc =
+        parser.parseFromString(
+          code,
+          "text/html"
+        );
+
+      const parserError =
+        doc.querySelector(
+          "parsererror"
+        );
+
+      if(parserError){
+
+        issues.push({
+          level:"critical",
+          title:"HTML parsing error",
+          description:
+            parserError.textContent.trim().slice(0,300)
+        });
+
+      }
+
+      if(!doc.documentElement){
+        issues.push({
+          level:"critical",
+          title:"Missing document root",
+          description:"The generated document has no valid root element."
+        });
+      }
+
+      if(!doc.head){
+        issues.push({
+          level:"warning",
+          title:"Head element missing",
+          description:"The page has no head element."
+        });
+      }
+
+      if(!doc.body){
+        issues.push({
+          level:"warning",
+          title:"Body element missing",
+          description:"The page has no body element."
+        });
+      }
+
+      const ids =
+        [...doc.querySelectorAll("[id]")]
+          .map(
+            element => element.id
+          )
+          .filter(Boolean);
+
+      const seen =
+        new Set();
+
+      ids.forEach(
+        id => {
+
+          if(seen.has(id)){
+
+            issues.push({
+              level:"warning",
+              title:
+                "Duplicate ID: " + id,
+              description:
+                "Duplicate IDs can break JavaScript selectors."
+            });
+
+          }
+
+          seen.add(id);
+
+        }
+      );
+
+      const scripts =
+        [...doc.querySelectorAll("script")];
+
+      scripts.forEach(
+        (script,index) => {
+
+          const type =
+            (script.getAttribute("type") || "")
+              .toLowerCase();
+
+          if(
+            script.src ||
+            type === "module"
+          ){
+            return;
+          }
+
+          const source =
+            script.textContent || "";
+
+          if(!source.trim()){
+            return;
+          }
+
+          try{
+            new Function(source);
+          }catch(error){
+            issues.push({
+              level:"critical",
+              title:
+                "JavaScript syntax error in script " +
+                (index + 1),
+              description:
+                error?.message ||
+                "The inline JavaScript could not be parsed."
+            });
+          }
+
+        }
+      );
+
+    }catch(error){
+
+      issues.push({
+        level:"warning",
+        title:"HTML analysis unavailable",
+        description:
+          error?.message ||
+          "The browser could not fully analyze the generated HTML."
+      });
+
+    }
+
+  }
+
+
+
+
+  if(
+    /<form\b/i.test(code || "") &&
+    !/<form[^>]+action=/i.test(code || "") &&
+    !/<script[\s\S]*?(submit|addEventListener)[\s\S]*?<\/script>/i.test(code || "")
+  ){
+
+    issues.push({
+      level:"info",
+      title:"Form behavior should be checked",
+      description:
+        "A form exists but no obvious submit behavior was detected by the simple local checker."
+    });
+
+  }
+
+
+  if(/onclick\s*=\s*["']\s*["']/i.test(code || "")){
+
+    issues.push({
+      level:"warning",
+      title:"Empty click handler",
+      description:
+        "An onclick handler appears to contain no action."
+    });
+
+  }
+
+
+  if(includeRuntimeErrors && runtimeErrors.length){
+
+    runtimeErrors
+      .slice(-5)
+      .forEach(
+        error => {
+
+          issues.push({
+            level:"critical",
+            title:"Preview runtime error",
+            description:error
+          });
+
+        }
+      );
+
+  }
+
+
+  if(!issues.length){
+
+    issues.push({
+      level:"ok",
+      title:"No obvious problems found",
+      description:
+        "Local structural and syntax checks passed. Interactive behavior and external resources may still require runtime testing."
+    });
+
+  }
+
+
+  return issues;
+
+}
+
+/* =========================================================
+   SHOW DIAGNOSTICS
+========================================================= */
+
+function showDiagnostics(
+  issues
+){
+
+  ui.diagList.innerHTML =
+    "";
+
+
+  issues.forEach(
+    issue => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "issue " +
+        issue.level;
+
+
+      const title =
+        document.createElement(
+          "strong"
+        );
+
+      title.textContent =
+        issue.title;
+
+
+      item.append(
+        title,
+        document.createTextNode(
+          issue.description
+        )
+      );
+
+
+      if(
+        issue.level !==
+        "ok"
+      ){
+
+        const breakLine =
+          document.createElement(
+            "br"
+          );
+
+
+        const fixButton =
+          document.createElement(
+            "button"
+          );
+
+        fixButton.className =
+          "fix";
+
+        fixButton.textContent =
+          "Fix with AI";
+
+
+        fixButton.onclick = () => {
+
+          fixIssue(
+            issue
+          );
+
+        };
+
+
+        item.append(
+          breakLine,
+          fixButton
+        );
+
+      }
+
+
+      ui.diagList.append(
+        item
+      );
+
+    }
+  );
+
+
+  ui.diagnostics.style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   CHECK & FIX
+========================================================= */
+
+ui.checkBtn.onclick = () => {
+
+  const issues =
+    staticCheck(
+      generatedCode
+    );
+
+
+  showDiagnostics(
+    issues
+  );
+
+
+  const hasProblems =
+    issues.some(
+      item =>
+        item.level ===
+          "critical" ||
+        item.level ===
+          "warning"
+    );
+
+
+  toast(
+    hasProblems
+      ? "Potential problems found."
+      : "Code check completed successfully."
+  );
+
+};
+
+
+/* =========================================================
+   CLOSE DIAGNOSTICS
+========================================================= */
+
+ui.closeDiag.onclick = () => {
+
+  ui.diagnostics.style.display =
+    "none";
+
+};
+
+
+/* =========================================================
+   AI FIX
+========================================================= */
+
+async function fixIssue(
+  issue
+){
+
+  if(generating){
+    return;
+  }
+
+
+  const request =
+    `
+Fix this problem in the current website:
+
+Problem:
+${issue.title}
+
+Details:
+${issue.description}
+
+IMPORTANT:
+Preserve every unrelated working feature.
+Do not remove useful existing code.
+Use the smallest safe edit possible.
+Return the edit as the JSON patch format required by ForgeAI.
+`;
+
+
+  ui.prompt.value =
+    request;
+
+
+  await generate(
+    true
+  );
+
+
+  if(!generating){
+
+    showDiagnostics(
+      staticCheck(
+        generatedCode
+      )
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PLAN DETECTION
+========================================================= */
+
+function planFor(
+  text
+){
+
+  const isExistingProject =
+    !!generatedCode &&
+    generatedCode !== STARTER_HTML;
+
+  if(isExistingProject){
+    return false;
+  }
+
+  if(
+    text.length > 120
+  ){
+    return true;
+  }
+
+  return /\b(create|build|website|application|app|dashboard|ecommerce|landing page|store|portfolio)\b/i.test(
+    text
+  );
+
+}
+
+
+/* =========================================================
+   BUILD PLAN
+========================================================= */
+
+function showPlan(
+  text
+){
+
+  pendingPrompt =
+    text;
+
+
+  const items = [
+
+    "Understand the request and current project"
+
+  ];
+
+
+  if(
+    /responsive|mobile|tablet/i.test(
+      text
+    )
+  ){
+
+    items.push(
+      "Build responsive behavior"
+    );
+
+  }
+
+
+  if(
+    /shop|store|cart|ecommerce/i.test(
+      text
+    )
+  ){
+
+    items.push(
+      "Add the requested shopping interactions"
+    );
+
+  }
+
+
+  if(
+    /form|login|signup|contact/i.test(
+      text
+    )
+  ){
+
+    items.push(
+      "Add the requested functional UI"
+    );
+
+  }
+
+
+  if(
+    /animation|animated|motion/i.test(
+      text
+    )
+  ){
+
+    items.push(
+      "Add smooth purposeful animations"
+    );
+
+  }
+
+
+  items.push(
+    "Apply the requested changes and validate the project"
+  );
+
+
+  ui.planList.innerHTML =
+    "";
+
+
+  items
+    .slice(0,6)
+    .forEach(
+      item => {
+
+        const li =
+          document.createElement(
+            "li"
+          );
+
+        li.textContent =
+          item;
+
+        ui.planList.append(
+          li
+        );
+
+      }
+    );
+
+
+  ui.plan.style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   PLAN BUTTONS
+========================================================= */
+
+ui.skipPlan.onclick = () => {
+
+  ui.plan.style.display =
+    "none";
+
+  perform(
+    pendingPrompt
+  );
+
+};
+
+
+ui.buildPlan.onclick = () => {
+
+  ui.plan.style.display =
+    "none";
+
+  perform(
+    pendingPrompt
+  );
+
+};
+
+
+/* =========================================================
+   PERFORM GENERATION
+========================================================= */
+
+async function perform(
+  text
+){
+
+  if(generating){
+    return;
+  }
+
+
+  if(!apiKey){
+
+    openApiModal();
+
+    return;
+
+  }
+
+  syncCodeFromEditor();
+
+
+  generating =
+    true;
+
+  lastRequest =
+    text;
+
+
+  ui.send.disabled =
+    true;
+
+  ui.send.classList.add(
+    "loading"
+  );
+
+
+  ui.welcome.style.display =
+    "none";
+
+
+  addMessage(
+    "user",
+    text
+  );
+
+
+  ui.prompt.value =
+    "";
+
+
+  /*
+   * Save the current version BEFORE
+   * asking Gemini for a replacement.
+   */
+
+  syncCodeFromEditor();
+
+  const oldCode =
+    generatedCode;
+
+  const baseRevision =
+    projectRevision;
+
+  const requestId =
+    ++activeRequestId;
+
+
+  snapshot();
+
+
+  startLoading();
+
+
+  try{
+
+    updateLoading(
+      "Analyzing request",
+      "Checking the current project...",
+      12
+    );
+
+
+    await sleep(
+      250
+    );
+
+
+    updateLoading(
+      "Building website",
+      "Sending your request to Gemini...",
+      25
+    );
+
+
+    /*
+     * CRITICAL:
+     * Do not replace generatedCode until
+     * Gemini gives us a valid complete HTML.
+     */
+
+    const newCode =
+      await callGemini(
+        text
+      );
+
+    if(activeRequestId !== requestId){
+      throw new Error(
+        "This AI response is stale and was safely discarded."
+      );
+    }
+
+    if(projectRevision !== baseRevision){
+      throw new Error(
+        "The project changed while AI was editing it. Please retry so no newer changes are overwritten."
+      );
+    }
+
+    if(newCode === oldCode){
+      throw new Error(
+        "The AI completed the request without changing the project. Please retry the edit."
+      );
+    }
+
+
+    const validation =
+      staticCheck(
+        newCode,
+        {includeRuntimeErrors:false}
+      );
+
+
+    const fatal =
+      validation.some(
+        issue =>
+          issue.level ===
+          "critical"
+      );
+
+
+    if(fatal){
+
+      throw new Error(
+        "Gemini returned HTML with critical structural problems. The previous website was preserved."
+      );
+
+    }
+
+
+    commitProjectCode(
+      newCode
+    );
+
+
+    projectName =
+      deriveProjectName(
+        text
+      );
+
+
+    ui.projectName.textContent =
+      projectName;
+
+
+    saveProject();
+
+
+    render();
+
+
+    const changes = [
+
+      "Updated the current website"
+
+    ];
+
+
+    if(
+      /fix|bug|error|issue/i.test(
+        text
+      )
+    ){
+
+      changes.push(
+        "Applied requested fixes"
+      );
+
+    }
+
+
+    if(
+      /responsive|mobile|tablet/i.test(
+        text
+      )
+    ){
+
+      changes.push(
+        "Updated responsive behavior"
+      );
+
+    }
+
+
+    if(
+      /design|modern|premium|animation|animated/i.test(
+        text
+      )
+    ){
+
+      changes.push(
+        "Updated visual design"
+      );
+
+    }
+
+
+    if(
+      /feature|add|include/i.test(
+        text
+      )
+    ){
+
+      changes.push(
+        "Added requested functionality"
+      );
+
+    }
+
+
+    addMessage(
+      "assistant",
+      "Done — the website has been updated and the live preview is ready.",
+      changes
+    );
+
+
+    toast(
+      "Website updated successfully."
+    );
+
+
+  }catch(error){
+
+    /*
+     * Restore the exact pre-request version only when the project has not
+     * changed underneath this request. Never overwrite newer manual edits.
+     */
+
+    if(
+      projectRevision === baseRevision &&
+      activeRequestId === requestId
+    ){
+      generatedCode =
+        oldCode;
+
+      committedCode =
+        oldCode;
+
+      ui.editor.value =
+        oldCode;
+
+      saveProject();
+    }
+
+
+    /*
+     * Remove the snapshot created
+     * specifically for this failed request.
+     */
+
+    if(
+      projectRevision === baseRevision &&
+      activeRequestId === requestId &&
+      history.length
+    ){
+
+      const last =
+        history[
+          history.length - 1
+        ];
+
+      if(
+        last === oldCode
+      ){
+
+        history.pop();
+
+        saveHistory();
+
+      }
+
+    }
+
+
+    let message =
+      error?.message ||
+      "Unknown error.";
+
+
+    if(
+      error.status ===
+        401 ||
+      error.status ===
+        403 ||
+      /api key|authentication|unauthenticated|permission/i.test(
+        message
+      )
+    ){
+
+      message =
+        "The Gemini API key was rejected. Check your API key and Gemini API access.";
+
+    }
+
+
+    else if(
+      /quota|resource_exhausted/i.test(
+        message
+      )
+    ){
+
+      message =
+        "The Gemini API quota has been exceeded.";
+
+    }
+
+
+    else if(
+      /model.*not found|not found.*model|unsupported model/i.test(
+        message
+      )
+    ){
+
+      message =
+        "The selected Gemini model is unavailable for this API key or account.";
+
+    }
+
+
+    else if(
+      isTemporaryError(
+        error
+      )
+    ){
+
+      message =
+        "Gemini is temporarily busy. ForgeAI already attempted automatic retries and model fallback.";
+
+    }
+
+
+    addMessage(
+      "assistant",
+      "I couldn't complete the build.\n\n" +
+      message +
+      "\n\nYour previous website was preserved."
+    );
+
+
+    toast(
+      "Build failed — current project preserved."
+    );
+
+
+  }finally{
+
+    generating =
+      false;
+
+    ui.send.disabled =
+      false;
+
+    ui.send.classList.remove(
+      "loading"
+    );
+
+    stopLoading();
+
+  }
+
+}
+
+
+/* =========================================================
+   GENERATE ENTRY
+========================================================= */
+
+async function generate(
+  force = false
+){
+
+  const text =
+    ui.prompt.value.trim();
+
+
+  if(!text){
+
+    toast(
+      "Describe what you want to build first."
+    );
+
+    ui.prompt.focus();
+
+    return;
+
+  }
+
+
+  if(!apiKey){
+
+    openApiModal();
+
+    toast(
+      "Add your Gemini API key first."
+    );
+
+    return;
+
+  }
+
+
+  if(generating){
+
+    return;
+
+  }
+
+
+  if(
+    !force &&
+    planFor(text)
+  ){
+
+    showPlan(
+      text
+    );
+
+    return;
+
+  }
+
+
+  await perform(
+    text
+  );
+
+}
+
+
+/* =========================================================
+   SEND
+========================================================= */
+
+ui.send.onclick = () =>
+  generate();
+
+
+ui.prompt.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+        "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      generate();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".suggestion"
+  )
+  .forEach(
+    button => {
+
+      button.onclick = () => {
+
+        ui.prompt.value =
+          button.dataset.prompt;
+
+        ui.prompt.focus();
+
+      };
+
+    }
+  );
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+ui.menuBtn.onclick = () => {
+
+  ui.side.classList.add(
+    "open"
+  );
+
+};
+
+
+ui.closeMenu.onclick = () => {
+
+  ui.side.classList.remove(
+    "open"
+  );
+
+};
+
+
+ui.prompt.addEventListener(
+  "focus",
+  () => {
+
+    if(
+      window.innerWidth <=
+      850
+    ){
+
+      ui.side.classList.add(
+        "open"
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PROJECT NAME
+========================================================= */
+
+function deriveProjectName(
+  text
+){
+
+  const cleaned =
+    text
+      .replace(
+        /^(create|build|make|design|develop)\s+/i,
+        ""
+      )
+      .trim();
+
+
+  if(!cleaned){
+
+    return "Generated project";
+
+  }
+
+
+  const words =
+    cleaned
+      .split(/\s+/)
+      .slice(0,6);
+
+
+  let name =
+    words.join(" ");
+
+
+  if(name.length > 38){
+
+    name =
+      name.substring(
+        0,
+        38
+      ) +
+      "…";
+
+  }
+
+
+  return name
+    .charAt(0)
+    .toUpperCase() +
+    name.slice(1);
+
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+      "Escape"
+    ){
+
+      closeApiModal();
+
+      closeConfirm();
+
+      ui.plan.style.display =
+        "none";
+
+    }
+
+
+    if(
+      (event.ctrlKey ||
+       event.metaKey) &&
+      event.key.toLowerCase() ===
+      "z"
+    ){
+
+      event.preventDefault();
+
+      if(event.shiftKey){
+
+        redo();
+
+      }else{
+
+        undo();
+
+      }
+
+    }
+
+
+    if(
+      (event.ctrlKey ||
+       event.metaKey) &&
+      event.key.toLowerCase() ===
+      "y"
+    ){
+
+      event.preventDefault();
+
+      redo();
+
+    }
+
+
+    if(
+      (event.ctrlKey ||
+       event.metaKey) &&
+      event.key ===
+      "Enter"
+    ){
+
+      event.preventDefault();
+
+      generate();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   AUTO SAVE
+========================================================= */
+
+setInterval(
+  () => {
+
+    if(
+      generatedCode
+    ){
+
+      saveProject();
+
+    }
+
+  },
+  5000
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateStatus();
+
+ui.editor.value =
+  generatedCode;
+
+committedCode =
+  generatedCode;
+
+projectRevision =
+  generatedCode ? 1 : 0;
+
+
+/*
+ * Only render the starter/current project
+ * if it is an actual saved project.
+ */
+
+if(
+  localStorage.getItem(
+    STORAGE.code
+  )
+){
+
+  render();
+
+}
+
+
+/* =========================================================
+   PREVENT ACCIDENTAL DOUBLE GENERATION
+========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+
+    saveProject();
+
+    saveHistory();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
